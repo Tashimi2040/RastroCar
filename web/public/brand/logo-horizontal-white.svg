@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" width="300" height="64">
+  <defs>
+    <linearGradient id="rc-g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4ADE80"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0F172A"/>
+  <path d="M10 52c6-2 8-9 14-9" fill="none" stroke="#2563EB" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 5"/>
+  <path d="M32 7c-10.2 0-18.5 8.2-18.5 18.3C13.5 39.5 32 57 32 57s18.5-17.5 18.5-31.7C50.5 15.2 42.2 7 32 7z" fill="url(#rc-g2)"/>
+  <path d="M22.5 29.5l3.2-6.2a2.4 2.4 0 0 1 2.1-1.3h8.4a2.4 2.4 0 0 1 2.1 1.3l3.2 6.2v5.3a1.6 1.6 0 0 1-1.6 1.6h-1.6a1.6 1.6 0 0 1-1.6-1.6v-.6H27.3v.6a1.6 1.6 0 0 1-1.6 1.6h-1.6a1.6 1.6 0 0 1-1.6-1.6z" fill="#0F172A"/>
+  <path d="M26.6 28.6l1.9-3.9h7l1.9 3.9z" fill="#4ADE80"/>
+  <circle cx="27" cy="31.6" r="1.6" fill="#4ADE80"/>
+  <circle cx="37" cy="31.6" r="1.6" fill="#4ADE80"/>
+  <text x="78" y="41" font-family="Inter, system-ui, sans-serif" font-size="30" font-weight="500" fill="#FFFFFF" letter-spacing="-0.5">Rastro<tspan font-weight="800" fill="#16A34A">Car</tspan></text>
+  <text x="79" y="55" font-family="Inter, system-ui, sans-serif" font-size="9.5" font-weight="600" fill="#94A3B8" letter-spacing="2.2">RASTREAMENTO VEICULAR</text>
+</svg>
