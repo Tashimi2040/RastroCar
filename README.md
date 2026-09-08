@@ -39,6 +39,20 @@ RastroCar/
 
 Banco de dados: SQLite (arquivo em `data/rastrocar.db`, modo WAL) via `node:sqlite` — sem dependências nativas, backup = copiar um arquivo. Adequado para centenas de rastreadores; migrações versionadas em `server/src/db/migrations.ts`.
 
+## Ambiente de teste publicado
+
+| Serviço | Endereço |
+|---|---|
+| Painel (Vercel) | https://rastrocar-lynedesktechs-projects.vercel.app |
+| Painel + API + WebSocket (Railway) | https://rastrocar-api-production.up.railway.app |
+| Gateway TCP dos rastreadores (Railway TCP proxy) | `altaria.proxy.rlwy.net` porta `38366` |
+
+Login inicial: `adm@lynedesk.com` (senha definida na variável `ADMIN_PASSWORD` do Railway; troque no primeiro acesso).
+
+Para o rastreador, use no SMS de servidor o host e a porta do proxy TCP acima (o painel já mostra esses valores em **Rastreadores → Instruções de configuração**). Exemplo GT06: `SERVER,1,altaria.proxy.rlwy.net,38366,0#`.
+
+Fluxo de publicação: cada push no branch gera a imagem `ghcr.io/tashimi2040/rastrocar:latest` pelo GitHub Actions (`.github/workflows/docker-image.yml`); o serviço do Railway roda essa imagem (basta "Redeploy" para pegar a nova versão). A Vercel serve o painel fazendo proxy para o Railway (`vercel.json`); para a Vercel construir o painel diretamente do repositório, conceda ao app GitHub da Vercel acesso ao repositório e importe o projeto com *Root Directory* `web`.
+
 ## Rodando localmente
 
 Requisitos: Node.js 22.13+ (usa `node:sqlite`).
@@ -110,6 +124,7 @@ NODE_ENV=production PORT=3000 TCP_PORT=5023 npm start   # use pm2/systemd para m
 |---|---|---|
 | `PORT` | 3000 | Porta HTTP (painel + API + WebSocket) |
 | `TCP_PORT` | 5023 | Porta TCP dos rastreadores (detecção automática de protocolo) |
+| `PUBLIC_TCP_PORT` | = TCP_PORT | Porta pública mostrada nas instruções SMS quando há proxy TCP na frente (Railway) |
 | `TCP_PORT_GT06` / `TCP_PORT_H02` / `TCP_PORT_TK103` | 0 | Portas dedicadas opcionais |
 | `DATA_DIR` | `./data` | Pasta do banco e do segredo JWT |
 | `JWT_SECRET` | gerado | Segredo dos tokens de login |
