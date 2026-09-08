@@ -66,7 +66,7 @@ sudo systemctl enable --now rastrocar
 - Serviço `rastrocar-api` roda a imagem `ghcr.io/tashimi2040/rastrocar:latest` (gerada pelo GitHub Actions a cada push).
 - Volume `rastrocar-data` montado em `/app/data` (banco SQLite e segredo JWT).
 - Domínio HTTP: `rastrocar-api-production.up.railway.app` (porta 3000).
-- TCP Proxy: `altaria.proxy.rlwy.net:38366` → porta 5023 do container. Variáveis `PUBLIC_HOST=altaria.proxy.rlwy.net` e `PUBLIC_TCP_PORT=38366` fazem o painel mostrar esse endereço nas instruções SMS.
+- TCP Proxy: `maglev.proxy.rlwy.net:31391` → porta 5023 do container. Variáveis `PUBLIC_HOST=maglev.proxy.rlwy.net` e `PUBLIC_TCP_PORT=31391` fazem o painel mostrar esse endereço nas instruções SMS.
 - Para atualizar: após o workflow terminar, clique em **Redeploy** no serviço (ou use a API/MCP do Railway).
 
 A Vercel (`vercel.json` na raiz) apenas faz proxy do painel para o Railway; o WebSocket e a API são acessados diretamente no domínio do Railway (`VITE_API_URL` em `web/.env.production`).

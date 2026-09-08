@@ -45,11 +45,11 @@ Banco de dados: SQLite (arquivo em `data/rastrocar.db`, modo WAL) via `node:sqli
 |---|---|
 | Painel (Vercel) | https://rastrocar-lynedesktechs-projects.vercel.app |
 | Painel + API + WebSocket (Railway) | https://rastrocar-api-production.up.railway.app |
-| Gateway TCP dos rastreadores (Railway TCP proxy) | `altaria.proxy.rlwy.net` porta `38366` |
+| Gateway TCP dos rastreadores (Railway TCP proxy) | `maglev.proxy.rlwy.net` porta `31391` |
 
 Login inicial: `adm@lynedesk.com` (senha definida na variável `ADMIN_PASSWORD` do Railway; troque no primeiro acesso).
 
-Para o rastreador, use no SMS de servidor o host e a porta do proxy TCP acima (o painel já mostra esses valores em **Rastreadores → Instruções de configuração**). Exemplo GT06: `SERVER,1,altaria.proxy.rlwy.net,38366,0#`.
+Para o rastreador, use no SMS de servidor o host e a porta do proxy TCP acima (o painel já mostra esses valores em **Rastreadores → Instruções de configuração**). Exemplo GT06: `SERVER,1,maglev.proxy.rlwy.net,31391,0#`.
 
 Fluxo de publicação: cada push no branch gera a imagem `ghcr.io/tashimi2040/rastrocar:latest` pelo GitHub Actions (`.github/workflows/docker-image.yml`); o serviço do Railway roda essa imagem (basta "Redeploy" para pegar a nova versão). A Vercel serve o painel fazendo proxy para o Railway (`vercel.json`); para a Vercel construir o painel diretamente do repositório, conceda ao app GitHub da Vercel acesso ao repositório e importe o projeto com *Root Directory* `web`.
 
