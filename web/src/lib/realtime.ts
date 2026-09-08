@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { getToken } from './api';
+import { getToken, wsUrl } from './api';
 
 export type RealtimeMessage =
   | { type: 'hello'; data: { time: number } }
@@ -20,8 +20,7 @@ function connect() {
   if (!wantConnection) return;
   const token = getToken();
   if (!token) return;
-  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
-  const ws = new WebSocket(`${proto}://${location.host}/ws?token=${encodeURIComponent(token)}`);
+  const ws = new WebSocket(wsUrl(token));
   socket = ws;
   ws.onmessage = (ev) => {
     try {

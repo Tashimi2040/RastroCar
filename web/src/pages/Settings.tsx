@@ -121,7 +121,7 @@ export function SettingsPage() {
           <div className="card-header"><h2><Map size={16} /> Mapa e empresa</h2></div>
           <div className="card-body">
             <Field label="Nome da empresa / plataforma"><input className="input" value={s.company_name} onChange={(e) => set('company_name', e.target.value)} disabled={!isAdmin} /></Field>
-            <Field label="URL dos tiles do mapa" hint="OpenStreetMap é gratuito. Para Google/Mapbox informe a URL de tiles com sua chave.">
+            <Field label="URL dos tiles do mapa (avançado)" hint="Os usuários escolhem o estilo no próprio mapa (Ruas, Satélite, Google). Este campo só é usado se você informar um provedor próprio, ex.: Mapbox/Google Maps Platform com sua chave.">
               <input className="input mono" value={s.map_tile_url} onChange={(e) => set('map_tile_url', e.target.value)} disabled={!isAdmin} />
             </Field>
             <Field label="Atribuição do mapa"><input className="input" value={s.map_attribution} onChange={(e) => set('map_attribution', e.target.value)} disabled={!isAdmin} /></Field>

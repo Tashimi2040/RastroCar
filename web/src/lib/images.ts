@@ -20,3 +20,4 @@ export const LOGO_MARK = '/brand/logo-mark.svg';
 export const LOGO_WHITE = '/brand/logo-horizontal-white.svg';
 export const LOGO_DARK = '/brand/logo-horizontal.svg';
 export const HERO = '/brand/hero.svg';
+export const HERO_IMAGE = '/img/hero.webp';

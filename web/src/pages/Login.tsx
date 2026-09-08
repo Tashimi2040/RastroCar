@@ -4,7 +4,7 @@ import { ShieldCheck, MapPin, Bell, Lock } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { useSettings } from '../lib/settings';
 import { Field } from '../components/ui';
-import { HERO, LOGO_WHITE, LOGO_MARK } from '../lib/images';
+import { HERO, HERO_IMAGE, LOGO_WHITE, LOGO_MARK } from '../lib/images';
 
 export function Login() {
   const { user, login, loading } = useAuth();
@@ -33,7 +33,7 @@ export function Login() {
 
   return (
     <div className="login-split">
-      <aside className="login-hero" style={{ backgroundImage: `url(${HERO})` }}>
+      <aside className="login-hero" style={{ backgroundImage: `url(${HERO_IMAGE}), url(${HERO})` }}>
         <div className="login-hero-content">
           <img src={LOGO_WHITE} alt={settings.company_name} className="login-logo" />
           <h1>Seu veículo sempre ao alcance.</h1>

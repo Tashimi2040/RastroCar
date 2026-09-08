@@ -304,3 +304,11 @@ table.table tr.selected { background: var(--primary-soft) !important; }
 .faq details { border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; background: var(--surface); margin-bottom: 8px; }
 .faq summary { cursor: pointer; font-weight: 600; }
 .faq p { margin-top: 8px; color: var(--text-2); font-size: 13.5px; }
+
+/* ===== Seletor de estilo do mapa ===== */
+.map-style-control { position: absolute; z-index: 500; top: 84px; left: 12px; display: flex; flex-direction: column; gap: 3px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px; box-shadow: var(--shadow-lg); align-items: stretch; }
+.map-style-control > svg { color: var(--text-3); align-self: center; margin-bottom: 2px; }
+.map-style-control button { border: none; background: transparent; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 600; color: var(--text-2); cursor: pointer; text-align: left; white-space: nowrap; }
+.map-style-control button:hover { background: var(--surface-2); }
+.map-style-control button.active { background: var(--primary); color: #fff; }
+@media (max-width: 900px) { .map-style-control { top: auto; bottom: 26px; left: 10px; flex-direction: row; } .map-style-control > svg { display: none; } }

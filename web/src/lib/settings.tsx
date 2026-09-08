@@ -12,8 +12,8 @@ export interface PublicSettings {
 
 const DEFAULTS: PublicSettings = {
   company_name: 'RastroCar',
-  map_tile_url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  map_attribution: '&copy; OpenStreetMap contributors',
+  map_tile_url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  map_attribution: '&copy; OpenStreetMap &copy; CARTO',
   map_center_lat: -23.55052,
   map_center_lng: -46.633308,
   map_zoom: 11,

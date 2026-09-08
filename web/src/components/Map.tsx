@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, CircleMarker, Circle,
 import type { Vehicle, Position, Geofence } from '../lib/types';
 import { STATE_COLOR, STATE_LABEL, fmtDateTime, fmtSpeed, fmtRelative } from '../lib/format';
 import { useSettings } from '../lib/settings';
+import { useMapStyle, MAP_STYLES } from '../lib/mapstyles';
+import { Layers } from 'lucide-react';
 
 export function vehicleIcon(v: { state: string; course: number | null; type?: string; blocked?: boolean | null }) {
   const color = STATE_COLOR[v.state] ?? '#64748b';
@@ -27,15 +29,33 @@ export function vehicleIcon(v: { state: string; course: number | null; type?: st
   });
 }
 
-export function BaseMap({ children, center, zoom, className, whenReady }: { children?: React.ReactNode; center?: [number, number]; zoom?: number; className?: string; whenReady?: (map: L.Map) => void }) {
+export function BaseMap({ children, center, zoom, className, whenReady, styleControl = true }: { children?: React.ReactNode; center?: [number, number]; zoom?: number; className?: string; whenReady?: (map: L.Map) => void; styleControl?: boolean }) {
   const s = useSettings();
   const c = center ?? [s.map_center_lat, s.map_center_lng];
+  const [style, setStyle] = useMapStyle();
+  const custom = style.id === 'ruas' && s.map_tile_url && !/cartocdn|openstreetmap\.org/.test(s.map_tile_url);
   return (
-    <MapContainer center={c} zoom={zoom ?? s.map_zoom} className={className} zoomControl={true} preferCanvas>
-      <TileLayer url={s.map_tile_url} attribution={s.map_attribution} maxZoom={19} />
-      {whenReady && <Ready fn={whenReady} />}
-      {children}
-    </MapContainer>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <MapContainer center={c} zoom={zoom ?? s.map_zoom} className={className} zoomControl={true} preferCanvas style={{ width: '100%', height: '100%' }}>
+        {custom ? (
+          <TileLayer key="custom" url={s.map_tile_url} attribution={s.map_attribution} maxZoom={20} />
+        ) : (
+          style.layers.map((l, i) => <TileLayer key={`${style.id}-${i}`} url={l.url} attribution={l.attribution} subdomains={l.subdomains ?? 'abc'} maxZoom={l.maxZoom ?? 19} maxNativeZoom={l.maxZoom ?? 19} />)
+        )}
+        {whenReady && <Ready fn={whenReady} />}
+        {children}
+      </MapContainer>
+      {styleControl && (
+        <div className="map-style-control" title="Estilo do mapa">
+          <Layers size={14} />
+          {MAP_STYLES.map((m) => (
+            <button key={m.id} className={style.id === m.id ? 'active' : ''} onClick={() => setStyle(m.id)} title={m.note ?? m.label}>
+              {m.short}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

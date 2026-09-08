@@ -206,7 +206,7 @@ export function Help() {
               <details><summary>Preciso pagar mensalidade do app do fabricante?</summary><p>Não. O rastreador é apontado para o servidor RastroCar; você só paga o plano de dados do chip.</p></details>
               <details><summary>Quantos veículos posso cadastrar?</summary><p>Não há limite fixo. O servidor foi projetado para centenas de rastreadores enviando a cada 10 segundos.</p></details>
               <details><summary>O cliente vê os veículos de outros clientes?</summary><p>Não. Cada acesso de cliente só enxerga os veículos, rotas, alertas, cercas e comandos do próprio cliente.</p></details>
-              <details><summary>Posso usar Google Maps no mapa?</summary><p>O padrão é OpenStreetMap (gratuito). Em Configurações, o administrador pode informar outra URL de tiles (Google, Mapbox etc.) com a chave correspondente.</p></details>
+              <details><summary>Como mudar o estilo do mapa (ruas, satélite, Google)?</summary><p>Use o seletor no canto do mapa: "Ruas" (padrão, visual semelhante ao Google Maps, gratuito), "Satélite" (imagens Esri com nomes de ruas), "Google" e "G. Satélite" (tiles diretos do Google, uso não oficial). A escolha fica salva no seu aparelho.</p></details>
               <details><summary>Os dados ficam guardados por quanto tempo?</summary><p>Posições brutas: conforme a retenção configurada (padrão 365 dias). Viagens, paradas e alertas são mantidos sem limite.</p></details>
               <details><summary>Funciona sem internet no celular?</summary><p>O app abre, mas mapa e posições precisam de internet. As últimas telas visitadas ficam em cache para abrir mais rápido.</p></details>
             </div>

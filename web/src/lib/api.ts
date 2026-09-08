@@ -1,5 +1,22 @@
 const TOKEN_KEY = 'rastrocar.token';
 
+/** Base da API. Vazio = mesmo host (painel servido pelo próprio servidor). */
+export const API_BASE: string = ((import.meta as any).env?.VITE_API_URL ?? '').replace(/\/+$/, '');
+
+export function apiUrl(path: string): string {
+  return API_BASE ? `${API_BASE}${path}` : path;
+}
+
+export function wsUrl(token: string): string {
+  if (API_BASE) {
+    const u = new URL(API_BASE);
+    const proto = u.protocol === 'https:' ? 'wss' : 'ws';
+    return `${proto}://${u.host}${u.pathname.replace(/\/+$/, '')}/ws?token=${encodeURIComponent(token)}`;
+  }
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  return `${proto}://${location.host}/ws?token=${encodeURIComponent(token)}`;
+}
+
 export function getToken(): string | null {
   try {
     return localStorage.getItem(TOKEN_KEY);
@@ -33,7 +50,7 @@ async function request<T>(method: string, url: string, body?: unknown): Promise<
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
   if (body !== undefined) headers['Content-Type'] = 'application/json';
-  const res = await fetch(url, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+  const res = await fetch(apiUrl(url), { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
   if (res.status === 401 && !url.includes('/auth/login')) {
     onUnauthorized?.();
   }
