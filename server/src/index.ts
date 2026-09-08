@@ -48,15 +48,29 @@ async function main() {
   const app = await buildApp();
   await app.ready();
   hub.attach(app.server);
-  await app.listen({ host: config.httpHost, port: config.httpPort });
-  logger.info({ port: config.httpPort }, 'servidor http/ws ouvindo');
+  // HTTP em dual-stack ("::") quando possível; cai para IPv4 se o sistema não tiver IPv6
+  const httpHosts = config.httpHost === '0.0.0.0' ? ['::', '0.0.0.0'] : [config.httpHost];
+  let httpBound = '';
+  for (const h of httpHosts) {
+    try {
+      await app.listen({ host: h, port: config.httpPort });
+      httpBound = h;
+      break;
+    } catch (err) {
+      if (h === httpHosts[httpHosts.length - 1]) throw err;
+    }
+  }
+  logger.info({ port: config.httpPort, host: httpBound }, 'servidor http/ws ouvindo');
 
-  const gateways = await startGateway([
-    { port: config.tcpPort, protocol: 'auto' },
-    { port: config.tcpPortGt06, protocol: 'gt06' },
-    { port: config.tcpPortH02, protocol: 'h02' },
-    { port: config.tcpPortTk103, protocol: 'tk103' },
-  ]);
+  const gateways = await startGateway(
+    [
+      { port: config.tcpPort, protocol: 'auto' },
+      { port: config.tcpPortGt06, protocol: 'gt06' },
+      { port: config.tcpPortH02, protocol: 'h02' },
+      { port: config.tcpPortTk103, protocol: 'tk103' },
+    ],
+    config.tcpHost || undefined,
+  );
 
   const timers = [
     setInterval(() => {

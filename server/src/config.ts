@@ -36,6 +36,8 @@ export const config = {
   isProd: env('NODE_ENV', 'development') === 'production',
   httpHost: env('HTTP_HOST', '0.0.0.0'),
   httpPort: envInt('PORT', envInt('HTTP_PORT', 3000)),
+  /** Host de escuta do TCP (vazio = dual-stack '::' com fallback IPv4). */
+  tcpHost: env('TCP_HOST', ''),
   /** Porta TCP única com detecção automática de protocolo (GT06 / H02 / TK103). */
   tcpPort: envInt('TCP_PORT', 5023),
   /** Porta TCP pública a informar aos rastreadores (difere da interna quando há proxy TCP, ex.: Railway). */

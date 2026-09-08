@@ -129,24 +129,44 @@ function handleFrame(session: Session, handler: ProtocolHandler, frame: Buffer) 
   }
 }
 
-export function startGateway(ports: { port: number; protocol: ProtocolName | 'auto' }[], host = '0.0.0.0'): Promise<GatewayServer[]> {
+/**
+ * Escuta em dual-stack ("::" aceita IPv6 e IPv4). Provedores como o Railway
+ * encaminham o TCP público por IPv6; se o sistema não tiver IPv6, cai para IPv4.
+ */
+function listenDualStack(server: net.Server, port: number, host?: string): Promise<string> {
+  const candidates = host ? [host] : ['::', '0.0.0.0'];
+  return new Promise((resolve, reject) => {
+    const tryNext = (i: number) => {
+      if (i >= candidates.length) return reject(new Error(`não foi possível escutar na porta ${port}`));
+      const h = candidates[i];
+      const onError = (err: NodeJS.ErrnoException) => {
+        server.removeListener('error', onError);
+        if (i + 1 < candidates.length && (err.code === 'EADDRNOTAVAIL' || err.code === 'EAFNOSUPPORT' || err.code === 'EINVAL')) return tryNext(i + 1);
+        reject(err);
+      };
+      server.once('error', onError);
+      server.listen(port, h, () => {
+        server.removeListener('error', onError);
+        resolve(h);
+      });
+    };
+    tryNext(0);
+  });
+}
+
+export function startGateway(ports: { port: number; protocol: ProtocolName | 'auto' }[], host?: string): Promise<GatewayServer[]> {
   const servers: GatewayServer[] = [];
   return Promise.all(
     ports
       .filter((p) => p.port > 0)
-      .map(
-        (p) =>
-          new Promise<void>((resolve, reject) => {
-            const fixed = p.protocol === 'auto' ? undefined : getProtocol(p.protocol);
-            const server = net.createServer((socket) => handleConnection(socket, fixed));
-            server.on('error', reject);
-            server.listen(p.port, host, () => {
-              logger.info({ port: p.port, protocol: p.protocol }, 'gateway tcp de rastreadores ouvindo');
-              servers.push({ port: p.port, protocol: p.protocol, server });
-              resolve();
-            });
-          }),
-      ),
+      .map(async (p) => {
+        const fixed = p.protocol === 'auto' ? undefined : getProtocol(p.protocol);
+        const server = net.createServer((socket) => handleConnection(socket, fixed));
+        server.on('error', (err) => logger.error({ err, port: p.port }, 'erro no gateway tcp'));
+        const boundHost = await listenDualStack(server, p.port, host);
+        logger.info({ port: p.port, host: boundHost, protocol: p.protocol }, 'gateway tcp de rastreadores ouvindo');
+        servers.push({ port: p.port, protocol: p.protocol, server });
+      }),
   ).then(() => servers);
 }
 
