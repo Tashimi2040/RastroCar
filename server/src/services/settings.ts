@@ -29,7 +29,7 @@ export interface AppSettings {
 export const DEFAULT_SETTINGS: AppSettings = {
   company_name: 'RastroCar',
   public_host: config.publicHost,
-  tcp_port: config.tcpPort,
+  tcp_port: config.publicTcpPort,
   map_tile_url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
   map_attribution: '&copy; OpenStreetMap &copy; CARTO',
   map_center_lat: -23.55052,

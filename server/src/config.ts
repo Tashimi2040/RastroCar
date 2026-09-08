@@ -38,6 +38,8 @@ export const config = {
   httpPort: envInt('PORT', envInt('HTTP_PORT', 3000)),
   /** Porta TCP única com detecção automática de protocolo (GT06 / H02 / TK103). */
   tcpPort: envInt('TCP_PORT', 5023),
+  /** Porta TCP pública a informar aos rastreadores (difere da interna quando há proxy TCP, ex.: Railway). */
+  publicTcpPort: envInt('PUBLIC_TCP_PORT', envInt('TCP_PORT', 5023)),
   /** Portas dedicadas opcionais por protocolo (0 = desligado). */
   tcpPortGt06: Number(process.env.TCP_PORT_GT06 ?? 0),
   tcpPortH02: Number(process.env.TCP_PORT_H02 ?? 0),
