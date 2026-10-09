@@ -85,7 +85,7 @@ export function buildSetupInstructions(opts: { model?: string; carrier?: string;
       steps.push({ title: 'Selecionar o protocolo GT06', sms: 'SZCS#PTL_SEL=2', note: 'Sem "#" no final. Garante que o aparelho fale GT06 com a plataforma.' });
     }
     steps.push({ title: 'Ajustar fuso horário (Brasília)', sms: 'GMT,W,3,0#', note: 'Alguns modelos usam "TIMEZONE,-3#". A plataforma trata os horários em UTC, então este passo é opcional.' });
-    steps.push({ title: 'Intervalo de envio de posição', sms: 'TIMER,10,30#', note: '10 s em movimento e 30 s parado. Ajuste conforme o plano de dados.' });
+    steps.push({ title: 'Intervalo de envio de posição', sms: 'TIMER,30,3600#', note: '30 s em movimento e 1 h parado: cabe em chips M2M pequenos. Com plano de 100 MB ou mais, use "TIMER,10,30#" para rotas mais detalhadas.' });
     steps.push({ title: 'Ativar detecção de ignição (ACC)', sms: 'ACCREP,ON#', note: 'Necessário para o mapeamento correto de viagens (início/fim por ignição).' });
     steps.push({ title: 'Reiniciar o rastreador', sms: 'RESET#' });
     steps.push({ title: 'Consultar configuração (opcional)', sms: 'PARAM#', note: 'Verifique se o servidor e a APN foram gravados corretamente.' });

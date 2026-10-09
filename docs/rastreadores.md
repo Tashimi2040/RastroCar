@@ -26,7 +26,7 @@ Gere os comandos prontos no painel (**Rastreadores → Instruções de configura
 APN,zap.vivo.com.br,vivo,vivo#        (Claro: claro.com.br,claro,claro | TIM: timbrasil.br,tim,tim)
 SERVER,1,rastreio.seudominio.com.br,5023,0#   (por IP: SERVER,0,1.2.3.4,5023,0#)
 GMT,W,3,0#
-TIMER,10,30#
+TIMER,30,3600#        (chip M2M; com plano de 100 MB+ use TIMER,10,30#)
 ACCREP,ON#
 RESET#
 PARAM#   /  STATUS#  /  URL#  /  GPRSSET#   (consultas)
@@ -83,7 +83,7 @@ GPRSON,1#                                  (liga a transmissão GPRS; alguns sae
 SZCS#PTL_SEL=2                             (seleciona protocolo GT06; sem # no final)
 APN,allcom.br,allcom,allcom#               (APN do broker do chip)
 SERVER,0,IP_DO_SERVIDOR,5023,0#            (por IP; alguns lotes não gravam domínio)
-TIMER,10,30#
+TIMER,30,3600#
 RESET#
 ```
 

@@ -108,7 +108,8 @@ export function Help() {
                   <tr><td>APN (TIM)</td><td className="mono">APN,timbrasil.br,tim,tim#</td><td>OK</td></tr>
                   <tr><td>Servidor por domínio</td><td className="mono">SERVER,1,SEU_DOMINIO,5023,0#</td><td>OK</td></tr>
                   <tr><td>Servidor por IP</td><td className="mono">SERVER,0,SEU_IP,5023,0#</td><td>OK</td></tr>
-                  <tr><td>Intervalo de envio</td><td className="mono">TIMER,10,30#</td><td>OK</td></tr>
+                  <tr><td>Intervalo de envio (chip M2M)</td><td className="mono">TIMER,30,3600#</td><td>OK</td></tr>
+                  <tr><td>Intervalo detalhado (plano de 100 MB+)</td><td className="mono">TIMER,10,30#</td><td>OK</td></tr>
                   <tr><td>Detectar ignição</td><td className="mono">ACCREP,ON#</td><td>OK</td></tr>
                   <tr><td>Reiniciar</td><td className="mono">RESET#</td><td>—</td></tr>
                   <tr><td>Ver configuração</td><td className="mono">PARAM#</td><td>Lista de parâmetros</td></tr>
