@@ -1,0 +1,25 @@
+services:
+  rastrocar:
+    build: .
+    container_name: rastrocar
+    restart: unless-stopped
+    ports:
+      - "3000:3000"   # painel web + API
+      - "5023:5023"   # gateway TCP dos rastreadores (GT06 / H02 / TK103)
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      TCP_PORT: 5023
+      DATA_DIR: /app/data
+      # Defina um segredo forte em produção (ou deixe vazio para gerar automaticamente em data/.jwt-secret)
+      JWT_SECRET: ${JWT_SECRET:-}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@rastrocar.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      PUBLIC_HOST: ${PUBLIC_HOST:-}
+      AUTO_REGISTER_DEVICES: "true"
+      TZ: America/Sao_Paulo
+    volumes:
+      - rastrocar-data:/app/data
+
+volumes:
+  rastrocar-data:
