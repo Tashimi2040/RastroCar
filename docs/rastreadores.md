@@ -62,6 +62,33 @@ fix010s***n123456
 | Arqia (M2M) | arqia.br | arqia | arqia |
 | Vivo M2M | m2m.vivo.com.br | vivo | vivo |
 | Claro M2M | m2m.claro.com.br | claro | claro |
+| Vivo Smart M2M (chips de revenda) | smart.m2m.vivo.com.br | vivo | vivo |
+| Allcom (Vivo) | allcom.vivo.com.br | allcom | allcom |
+| Allcom (Claro) | allcom.claro.com.br | allcom | allcom |
+| Allcom (Algar) | allcom.br | allcom | allcom |
+| Allcom (Arqia) | allcom.arquia.com.br | allcom | allcom |
+| M2Data (Algar) | m2data.algar.br | algar | algar |
+| Virtueyes | virtueyes.com.br | virtu | virtu |
+| Tmdata (Vivo / Claro / TIM) | tmdata.vivo.com.br / tmdata.claro.com.br / tmdata.tim.br | tmdata | tmdata |
+| Link Solutions / TNS | linksolutions.br | link | link |
+
+Chips M2M vendidos junto com o rastreador ("sem mensalidade") geralmente são de um desses brokers. Eles **recebem** SMS e executam os comandos, mas não respondem. Confirme a APN com o vendedor.
+
+## J16 / J16A / J16B (4G)
+
+Protocolo GT06, mas com particularidades:
+
+```
+GPRSON,1#                                  (liga a transmissão GPRS; alguns saem desligados)
+SZCS#PTL_SEL=2                             (seleciona protocolo GT06; sem # no final)
+APN,allcom.br,allcom,allcom#               (APN do broker do chip)
+SERVER,0,IP_DO_SERVIDOR,5023,0#            (por IP; alguns lotes não gravam domínio)
+TIMER,10,30#
+RESET#
+```
+
+Consultas: `PARAM#`, `GPRSSET#`, `STATUS#`, `URL#`, `VERSION#`. Restaurar padrão: `FACTORY#`.
+Se o aparelho nunca abre conexão, teste com um chip comum de celular (Vivo/Claro/TIM com dados): se conectar, o problema é a APN/chip M2M; se não, é o aparelho ou os SMS não estão chegando.
 
 ## Instalação física
 

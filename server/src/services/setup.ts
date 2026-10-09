@@ -9,7 +9,8 @@ export interface DeviceModel {
 
 /** Modelos populares no Brasil e o protocolo que cada um utiliza. */
 export const DEVICE_MODELS: DeviceModel[] = [
-  { id: 'gt06', name: 'GT06 / GT06N / GT06E (Concox e clones)', protocol: 'gt06', description: 'Modelo mais comum nos "rastreadores com app sem mensalidade" (Mercado Livre / Shopee). Inclui TR02, TK300, JM-VL01, WeTrack, ET300, GT02A, X3, CRX1, J16, E3+.' },
+  { id: 'gt06', name: 'GT06 / GT06N / GT06E (Concox e clones)', protocol: 'gt06', description: 'Modelo mais comum nos "rastreadores com app sem mensalidade" (Mercado Livre / Shopee). Inclui TR02, TK300, JM-VL01, WeTrack, ET300, GT02A, X3, CRX1, E3+.' },
+  { id: 'j16', name: 'J16 / J16A / J16B (4G, Quectel)', protocol: 'gt06', description: 'Mini rastreador 2G+4G muito vendido com chip M2M. Protocolo GT06, mas precisa de GPRSON e seleção de protocolo (SZCS#PTL_SEL=2) em alguns firmwares.' },
   { id: 'jm-vl01', name: 'Jimi JM-VL01 / VL02 / VL03', protocol: 'gt06', description: 'Rastreadores Jimi IoT (Concox). Usam protocolo GT06 com comandos RELAY.' },
   { id: 'e3', name: 'E3 / E3+ / E4 (Ensen / Multitek)', protocol: 'gt06', description: 'Rastreadores chineses populares de motos. Protocolo GT06.' },
   { id: 'st901', name: 'Sinotrack ST-901 / ST-901M / ST-906', protocol: 'h02', description: 'Muito vendido para motos e carros com relé. Protocolo H02 (texto).' },
@@ -27,6 +28,17 @@ export const CARRIERS: Record<string, { name: string; apn: string; user: string;
   arqia: { name: 'Arqia (M2M)', apn: 'arqia.br', user: 'arqia', pass: 'arqia' },
   m2m_vivo: { name: 'Vivo M2M', apn: 'm2m.vivo.com.br', user: 'vivo', pass: 'vivo' },
   m2m_claro: { name: 'Claro M2M', apn: 'm2m.claro.com.br', user: 'claro', pass: 'claro' },
+  smart_vivo: { name: 'Vivo Smart M2M (chips de revenda)', apn: 'smart.m2m.vivo.com.br', user: 'vivo', pass: 'vivo' },
+  allcom_vivo: { name: 'Allcom (Vivo)', apn: 'allcom.vivo.com.br', user: 'allcom', pass: 'allcom' },
+  allcom_claro: { name: 'Allcom (Claro)', apn: 'allcom.claro.com.br', user: 'allcom', pass: 'allcom' },
+  allcom_algar: { name: 'Allcom (Algar)', apn: 'allcom.br', user: 'allcom', pass: 'allcom' },
+  allcom_arqia: { name: 'Allcom (Arqia)', apn: 'allcom.arquia.com.br', user: 'allcom', pass: 'allcom' },
+  m2data_algar: { name: 'M2Data (Algar)', apn: 'm2data.algar.br', user: 'algar', pass: 'algar' },
+  virtueyes: { name: 'Virtueyes', apn: 'virtueyes.com.br', user: 'virtu', pass: 'virtu' },
+  tmdata_vivo: { name: 'Tmdata (Vivo)', apn: 'tmdata.vivo.com.br', user: 'tmdata', pass: 'tmdata' },
+  tmdata_claro: { name: 'Tmdata (Claro)', apn: 'tmdata.claro.com.br', user: 'tmdata', pass: 'tmdata' },
+  tmdata_tim: { name: 'Tmdata (TIM)', apn: 'tmdata.tim.br', user: 'tmdata', pass: 'tmdata' },
+  link_tns: { name: 'Link Solutions / TNS', apn: 'linksolutions.br', user: 'link', pass: 'link' },
   other: { name: 'Outra (informar manualmente)', apn: 'APN_DA_OPERADORA', user: '', pass: '' },
 };
 
@@ -68,6 +80,10 @@ export function buildSetupInstructions(opts: { model?: string; carrier?: string;
       sms: isIp ? `SERVER,0,${host},${port},0#` : `SERVER,1,${host},${port},0#`,
       note: 'O primeiro parâmetro é 0 para IP e 1 para domínio (DNS).',
     });
+    if (model.id === 'j16') {
+      steps.push({ title: 'Ligar a transmissão GPRS', sms: 'GPRSON,1#', note: 'Alguns J16 saem de fábrica com o GPRS desligado e nunca abrem conexão com o servidor.' });
+      steps.push({ title: 'Selecionar o protocolo GT06', sms: 'SZCS#PTL_SEL=2', note: 'Sem "#" no final. Garante que o aparelho fale GT06 com a plataforma.' });
+    }
     steps.push({ title: 'Ajustar fuso horário (Brasília)', sms: 'GMT,W,3,0#', note: 'Alguns modelos usam "TIMEZONE,-3#". A plataforma trata os horários em UTC, então este passo é opcional.' });
     steps.push({ title: 'Intervalo de envio de posição', sms: 'TIMER,10,30#', note: '10 s em movimento e 30 s parado. Ajuste conforme o plano de dados.' });
     steps.push({ title: 'Ativar detecção de ignição (ACC)', sms: 'ACCREP,ON#', note: 'Necessário para o mapeamento correto de viagens (início/fim por ignição).' });
@@ -75,6 +91,8 @@ export function buildSetupInstructions(opts: { model?: string; carrier?: string;
     steps.push({ title: 'Consultar configuração (opcional)', sms: 'PARAM#', note: 'Verifique se o servidor e a APN foram gravados corretamente.' });
     tips.push('Bloqueio do motor: a plataforma envia "RELAY,1#" (bloquear) e "RELAY,0#" (liberar). Em modelos antigos que usam "DYD"/"HFYD", selecione a variante nos comandos.');
     tips.push('Se o rastreador não conectar, envie "STATUS#" ou "GPRSSET#" para verificar o estado do GPRS e "URL#" para ver o servidor gravado.');
+    tips.push('Chips M2M de revenda costumam receber SMS sem responder: envie os comandos mesmo assim e confira a chegada do aparelho no menu Rastreadores. Se não conectar, teste com um chip comum (Vivo/Claro/TIM) para separar problema de chip/APN de problema do aparelho.');
+    tips.push('Em último caso, "FACTORY#" restaura o padrão de fábrica; depois refaça APN e SERVER.');
   } else if (model.protocol === 'h02') {
     const p = pwd.padStart(4, '0').slice(-4);
     steps.push({ title: 'Configurar APN da operadora', sms: `803${p} ${carrier.apn}${carrier.user ? ` ${carrier.user} ${carrier.pass}` : ''}`, note: 'Senha padrão do ST-901 é 0000. Resposta esperada: "SET APN OK".' });

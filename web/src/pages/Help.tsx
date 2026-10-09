@@ -116,6 +116,23 @@ export function Help() {
                 </tbody>
               </table>
             </div>
+            <h3>J16 / J16A / J16B (4G) e chips M2M de revenda</h3>
+            <p>O J16 fala GT06, mas alguns lotes saem com o GPRS desligado ou em outro protocolo. Chips M2M que vêm junto com o rastreador costumam <strong>receber</strong> os SMS sem responder: envie mesmo assim e confira a chegada no menu Rastreadores.</p>
+            <div className="table-wrap">
+              <table className="table">
+                <tbody>
+                  <tr><td>Ligar a transmissão GPRS</td><td className="mono">GPRSON,1#</td><td>OK</td></tr>
+                  <tr><td>Selecionar protocolo GT06</td><td className="mono">SZCS#PTL_SEL=2</td><td>sem # no final</td></tr>
+                  <tr><td>APN broker Allcom (Algar)</td><td className="mono">APN,allcom.br,allcom,allcom#</td><td>confirme com o vendedor</td></tr>
+                  <tr><td>APN broker M2Data (Algar)</td><td className="mono">APN,m2data.algar.br,algar,algar#</td><td>confirme com o vendedor</td></tr>
+                  <tr><td>APN Vivo Smart M2M</td><td className="mono">APN,smart.m2m.vivo.com.br,vivo,vivo#</td><td>confirme com o vendedor</td></tr>
+                  <tr><td>Servidor por IP (mais seguro no J16)</td><td className="mono">SERVER,0,SEU_IP,5023,0#</td><td>OK</td></tr>
+                  <tr><td>Consultar GPRS / servidor gravado</td><td className="mono">GPRSSET# / URL#</td><td>parâmetros</td></tr>
+                  <tr><td>Restaurar padrão de fábrica</td><td className="mono">FACTORY#</td><td>refazer APN e SERVER depois</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Teste decisivo: coloque um chip comum de celular (com dados) no rastreador e repita APN + SERVER + RESET. Se conectar, o problema é o chip M2M/APN. Se não conectar, o aparelho não está recebendo os SMS ou está sem alimentação.</p>
             <h3>Sinotrack ST-901 (senha padrão 0000)</h3>
             <div className="table-wrap">
               <table className="table">
